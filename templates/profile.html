@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dwitter</title>
+  {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'dwitter_styles.css' %}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="crossorigin="anonymous" />
+</head>
+
+<body>
+  <!-- sidebar starts -->
+  <div class="sidebar">
+    <i class="fab fa-twitter"></i><a href="/" style="font-size:xx-large">Dwitter</a>
+    <div class="sidebarOption active">
+      <span class="material-icons"> home </span>
+      <a href="/" style="text-decoration: none; color: inherit;">
+        <h2>Home</h2>
+      </a>
+    </div>
+
+    <div class="sidebarOption">
+      <span class="material-icons"> perm_identity </span>
+      {% comment %} Fix This user profile link {% endcomment %}
+      <a href="../profile" style="text-decoration: none; color: inherit;">
+        <h2>Profile</h2>
+      </a>
+    </div>
+
+    <div class="sidebarOption">
+      <span class="material-icons"> more_horiz </span>
+      <h2>More</h2>
+    </div>
+    <a href="../logout">
+      <button class="sidebar__tweet">LogOut</button>
+    </a>
+  </div>
+  <!-- sidebar ends -->
+
+  <!-- feed starts -->
+  <div class="feed">
+    <div class="feed__header">
+      <h2>{{user_name}}'s Dweets</h2>
+    </div>
+
+    {% comment %} <!-- tweetbox starts -->
+    <div class="tweetBox">
+      <form action="/dweet" method="post">
+          {% csrf_token %}
+        <div class="tweetbox__input">
+          <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" />
+          <input type="text" name="dweet" placeholder="What's happening?" />
+        </div>
+        <button class="tweetBox__tweetButton">Dweet</button>
+      </form>
+    </div>
+    <!-- tweetbox ends -->  {% endcomment %}
+
+    {% if len_dweets < 1%}
+    <h3>No Dweets</h3>
+    {% endif %}
+
+    {% for dweet in dweets %}
+    <!-- post starts -->
+    <div class="post">
+      <div class="post__avatar">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeeUl9IZDN97pBQNgeunx6dD1df-4g7vkPFw&usqp=CAU" alt="">
+      </div>
+
+      <div class="post__body">
+        <div class="post__header">
+          <div class="post__headerText">
+            <h3>{{dweet.user_id}}</h3>
+          </div>
+          <div class="post__headerDescription">
+            <p>{{dweet.dweet}}</p>
+            <p>{{dweet.time}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- post ends -->
+    {% endfor %}
+  
+  </div>
+  <!-- feed ends -->
+
+  <!-- widgets starts -->
+  <div class="widgets">
+    <div class="widgets__input">
+      <span class="material-icons widgets__searchIcon"> search </span>
+      <input type="text" placeholder="Search Dwitter" />
+    </div>
+
+    <div class="widgets__widgetContainer">
+      <h1>Profile</h1>
+      <blockquote>
+
+        <h1 style="font-weight: 400;">Name: {{user_name}}</h1 style="font-weight: 400;">
+        <a href="../followers">
+          <h1 style="font-weight: 400;">Followers : {{user_followers}}</h1 style="font-weight: 400;">
+        </a>
+        <a href="../following">
+          <h1 style="font-weight: 400;">Following : {{user_following}}</h1 style="font-weight: 400;">
+        </a>
+        <h1 style="font-weight: 400;">Bio :{{user_bio}}</h1 style="font-weight: 400;">
+        
+        {% if own_profile_status%}
+
+        {% else %}
+
+          {% if follow_unfollow %}
+            <form action="../unfollow/{{user_name}}" method="post">
+              {% csrf_token %}
+              <button class="tweetBox__tweetButton">UnFollow</button>
+            </form>
+          {% else %}
+            <form action="" method="post">
+              {% csrf_token %}
+              <button class="tweetBox__tweetButton">Follow</button>
+            </form>
+          {% endif %}
+
+        {% endif %}
+        
+
+      </blockquote>
+    </div>
+  </div>
+  <!-- widgets ends -->
+</body>
+
+</html>
