@@ -23,7 +23,7 @@ The following command are meant to run in a terminal or cmd
 ### Run the Local Server on a specific Port
     python3 manage.py runserver PORT_NO
 - By Default it runs on **127.0.0.1:8000**
-- Now you can make changes to the project
+- Now you can make changes to the project **[Refer this](https://github.com/subhani-syed/Dwitter/blob/main/CONTRIBUTING.md)**
 ### To Exit the Virtual Environment
     deactivate
     
