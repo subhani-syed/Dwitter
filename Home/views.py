@@ -42,8 +42,10 @@ def home(request):
         # for dweet in dweets_list:
         #     print(f'Dweet:{dweet.dweet}')
         #     print(f'Time:{dweet.time}')
-
-        suggestions = random.sample(list(Profile.objects.all()),3)
+        try:
+            suggestions = random.sample(list(Profile.objects.all()),3)
+        except:
+            suggestions = list(Profile.objects.all())
         context={
             "user_name":current_user.username,
             "user_followers":len(current_user.following.all()),
