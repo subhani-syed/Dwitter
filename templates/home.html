@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'dwitter_styles.css' %}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="crossorigin="anonymous" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -47,8 +48,20 @@
           {% csrf_token%}
         <div class="tweetbox__input">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeeUl9IZDN97pBQNgeunx6dD1df-4g7vkPFw&usqp=CAU" alt="">
-          <input type="text" name="dweet" autocomplete="off" placeholder="What's happening?" />
+          <input type="text" name="dweet" autocomplete="off" placeholder="What's happening?" maxlength="70"/>
+          <br>
         </div>
+        <p style="display: none; margin-left: 10px;" id="par">Characters Left: <span id="characters"></span></p>
+        <script>
+          $('input').keyup(updateCount);
+          $('input').keydown(updateCount);
+          function updateCount() {
+            $('#par').css("display","inline");
+            var cs = $(this).val().length;
+            var str = cs+'/'+(70-cs);
+            $('#characters').text(str);
+          }
+        </script>
         <button class="tweetBox__tweetButton">Dweet</button>
       </form>
     </div>
