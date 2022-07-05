@@ -33,15 +33,9 @@ def home(request):
             for _ in dweets_by_author:
                 dweets_list.append(_)
         
-        # Remove These Comments
-        # print(f'These are the authors of the feed list {dweet_authors}')
-        # print(f"These are the dweets by authors {dweets_list}")
-        # print("The Feed dweet:")
+        #Sort By Time 
+        dweets_list.sort(key=lambda x: x.time,reverse=True)
 
-        # These are the dweets
-        # for dweet in dweets_list:
-        #     print(f'Dweet:{dweet.dweet}')
-        #     print(f'Time:{dweet.time}')
         try:
             suggestions = random.sample(list(Profile.objects.all()),3)
         except:
@@ -90,20 +84,12 @@ def register(request):
     if request.method == "POST":
         username = request.POST["name_r"]
         pwd = request.POST["password_r"]
-
-        # Fix RE-ENTER PASSWORD
-        # rpwd = request.POST["repassword"]
-        
         bio = request.POST["bio"]
         user = User.objects.create_user(username=username,password=pwd)
         user.save()
         profl = Profile(user = user,bio=bio)
         profl.save()
         return redirect("/")
-    
-    #GET
-    # return render(request,'register.html')
-
 
 def dweet(request):
     # POST
@@ -149,12 +135,6 @@ def user_profile(request,username):
     user = user_at_link
     follower = user.following.all()
     following = user.followers.all()
-    # print(f"{len(following)} Following :")
-    # for i in following:
-    #     print(i.user_id)
-    # print(f"{len(follower)} Followers :")
-    # for j in follower:
-    #     print(j.following_user_id)
 
     f_status = True
     if UserFollowing.objects.filter(user_id = user_at_link,following_user_id=request.user).exists():
@@ -179,8 +159,6 @@ def user_profile(request,username):
 
 # This is test endpoint
 def test(request):
-    # All Fine Guess So...
-    # This "user" is the user who's details we are requesting
     user = request.user
     y = user.following.all()
     x = user.followers.all()
@@ -191,9 +169,6 @@ def test(request):
     for j in y:
         print(j.following_user_id)
     return render(request,"dwitter_home.html")
-    # return HttpResponse("OK")
-    # return render(request,"suggestions.html")
-
 
 def suggestions(request):
     current_user = request.user
